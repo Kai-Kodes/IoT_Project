@@ -1,0 +1,58 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: p311-mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./docker/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: p311-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-p311_iot}
+      POSTGRES_USER: ${POSTGRES_USER:-p311_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-p311_industrial_secret}
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-p311_admin} -d ${POSTGRES_DB:-p311_iot}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  grafana:
+    image: grafana/grafana-oss:11.2.0
+    container_name: p311-grafana
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /var/lib/grafana/dashboards/p311_industrial_telemetry.json
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Viewer"
+      POSTGRES_DB: ${POSTGRES_DB:-p311_iot}
+      POSTGRES_USER: ${POSTGRES_USER:-p311_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-p311_industrial_secret}
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./docker/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./docker/grafana/dashboards:/var/lib/grafana/dashboards:ro
+
+volumes:
+  postgres_data:
+    name: p311_postgres_data
+  grafana_data:
+    name: p311_grafana_data

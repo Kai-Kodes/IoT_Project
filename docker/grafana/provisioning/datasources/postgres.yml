@@ -1,0 +1,21 @@
+apiVersion: 1
+
+datasources:
+  - name: PostgreSQL-P311
+    type: postgres
+    uid: p311-postgres-ds
+    access: proxy
+    url: postgres:5432
+    user: $__env{POSTGRES_USER}
+    isDefault: true
+    jsonData:
+      database: $__env{POSTGRES_DB}
+      sslmode: disable
+      maxOpenConns: 10
+      maxIdleConns: 5
+      connMaxLifetime: 14400
+      postgresVersion: 1600
+      timescaledb: false
+    secureJsonData:
+      password: $__env{POSTGRES_PASSWORD}
+    editable: true

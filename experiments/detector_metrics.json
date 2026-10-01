@@ -1,0 +1,133 @@
+{
+  "dataset_path": "data/synthetic_motor_telemetry.csv",
+  "total_samples": 4000,
+  "overall_accuracy": 0.9938,
+  "macro_metrics": {
+    "precision": 0.9902,
+    "recall": 0.9961,
+    "f1_score": 0.9931
+  },
+  "weighted_metrics": {
+    "precision": 0.9938,
+    "recall": 0.9938,
+    "f1_score": 0.9938
+  },
+  "per_class_metrics": {
+    "normal": {
+      "precision": 0.9972,
+      "recall": 0.99,
+      "f1_score": 0.9936,
+      "support": 1800
+    },
+    "bearing_degradation": {
+      "precision": 0.9975,
+      "recall": 0.9925,
+      "f1_score": 0.995,
+      "support": 400
+    },
+    "motor_overheating": {
+      "precision": 0.9876,
+      "recall": 0.9925,
+      "f1_score": 0.99,
+      "support": 400
+    },
+    "motor_overload": {
+      "precision": 0.9975,
+      "recall": 1.0,
+      "f1_score": 0.9988,
+      "support": 400
+    },
+    "excessive_vibration": {
+      "precision": 0.9901,
+      "recall": 1.0,
+      "f1_score": 0.995,
+      "support": 400
+    },
+    "low_pressure": {
+      "precision": 0.995,
+      "recall": 0.9975,
+      "f1_score": 0.9963,
+      "support": 400
+    },
+    "sensor_anomaly": {
+      "precision": 0.9662,
+      "recall": 1.0,
+      "f1_score": 0.9828,
+      "support": 200
+    }
+  },
+  "confusion_matrix": [
+    [
+      1782,
+      1,
+      5,
+      1,
+      2,
+      2,
+      7
+    ],
+    [
+      1,
+      397,
+      0,
+      0,
+      2,
+      0,
+      0
+    ],
+    [
+      3,
+      0,
+      397,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      400,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      400,
+      0,
+      0
+    ],
+    [
+      1,
+      0,
+      0,
+      0,
+      0,
+      399,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      200
+    ]
+  ],
+  "classes": [
+    "normal",
+    "bearing_degradation",
+    "motor_overheating",
+    "motor_overload",
+    "excessive_vibration",
+    "low_pressure",
+    "sensor_anomaly"
+  ]
+}

@@ -1,0 +1,24 @@
+FROM python:3.13-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential curl \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY backend ./backend
+COPY knowledge_base ./knowledge_base
+COPY simulator ./simulator
+COPY frontend/dist ./frontend/dist
+COPY .env.example .env
+
+ENV PYTHONUNBUFFERED=1
+ENV HOST=0.0.0.0
+ENV PORT=8000
+
+EXPOSE 8000
+
+CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]

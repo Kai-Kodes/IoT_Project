@@ -1,0 +1,674 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 100,
+      "title": "Machine Overview & Health Indicators",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 1 },
+      "id": 8,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            { "options": { "healthy": { "color": "green", "index": 0, "text": "HEALTHY" } }, "type": "value" },
+            { "options": { "warning": { "color": "semi-dark-orange", "index": 1, "text": "WARNING" } }, "type": "value" },
+            { "options": { "critical": { "color": "red", "index": 2, "text": "CRITICAL" } }, "type": "value" },
+            { "options": { "alarm": { "color": "red", "index": 3, "text": "ALARM" } }, "type": "value" }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "green", "value": null }]
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT status FROM machines WHERE id = 'MOTOR-001' LIMIT 1;",
+          "refId": "A"
+        }
+      ],
+      "title": "Machine Status (MOTOR-001)",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "gridPos": { "h": 4, "w": 4, "x": 4, "y": 1 },
+      "id": 11,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "reduceOptions": { "calcs": ["lastNotNull"], "values": false }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 75 },
+              { "color": "red", "value": 95 }
+            ]
+          }
+        }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT timestamp AS \"time\", temperature FROM telemetry WHERE $__timeFilter(timestamp) ORDER BY timestamp ASC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Current Temperature",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "gridPos": { "h": 4, "w": 4, "x": 8, "y": 1 },
+      "id": 12,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "reduceOptions": { "calcs": ["lastNotNull"], "values": false }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "velocitykms",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 2.8 },
+              { "color": "orange", "value": 4.5 },
+              { "color": "red", "value": 7.1 }
+            ]
+          }
+        }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT timestamp AS \"time\", vibration FROM telemetry WHERE $__timeFilter(timestamp) ORDER BY timestamp ASC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Current Vibration (RMS)",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "gridPos": { "h": 4, "w": 4, "x": 12, "y": 1 },
+      "id": 13,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "reduceOptions": { "calcs": ["lastNotNull"], "values": false }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "amp",
+          "decimals": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 9.5 },
+              { "color": "red", "value": 11.25 }
+            ]
+          }
+        }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT timestamp AS \"time\", current FROM telemetry WHERE $__timeFilter(timestamp) ORDER BY timestamp ASC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Current Motor Current",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "gridPos": { "h": 4, "w": 4, "x": 16, "y": 1 },
+      "id": 14,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "reduceOptions": { "calcs": ["lastNotNull"], "values": false }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bar",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 2.0 },
+              { "color": "green", "value": 3.5 }
+            ]
+          }
+        }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT timestamp AS \"time\", pressure FROM telemetry WHERE $__timeFilter(timestamp) ORDER BY timestamp ASC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Lube / Coolant Pressure",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "gridPos": { "h": 4, "w": 4, "x": 20, "y": 1 },
+      "id": 15,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "reduceOptions": { "calcs": ["lastNotNull"], "values": false }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "rotrpm",
+          "decimals": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 1440 },
+              { "color": "green", "value": 1480 }
+            ]
+          }
+        }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT timestamp AS \"time\", rpm FROM telemetry WHERE $__timeFilter(timestamp) ORDER BY timestamp ASC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Shaft Speed (RPM)",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+      "id": 101,
+      "title": "Continuous Telemetry Time Series",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "fillOpacity": 15
+          },
+          "unit": "celsius",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "#EAB839", "value": 75 },
+              { "color": "#EF843C", "value": 85 },
+              { "color": "#E24D42", "value": 95 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 6 },
+      "id": 1,
+      "options": {
+        "legend": { "calcs": ["last", "max", "mean"], "displayMode": "table", "placement": "bottom" },
+        "tooltip": { "mode": "multi", "sort": "none" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT timestamp AS \"time\", temperature AS \"Temperature (°C)\" FROM telemetry WHERE $__timeFilter(timestamp) ORDER BY timestamp ASC;",
+          "refId": "A"
+        }
+      ],
+      "title": "A. Motor Surface & Bearing Temperature Over Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "fillOpacity": 15
+          },
+          "unit": "velocitykms",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "#EAB839", "value": 2.8 },
+              { "color": "#EF843C", "value": 4.5 },
+              { "color": "#E24D42", "value": 7.1 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 6 },
+      "id": 2,
+      "options": {
+        "legend": { "calcs": ["last", "max", "mean"], "displayMode": "table", "placement": "bottom" },
+        "tooltip": { "mode": "multi", "sort": "none" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT timestamp AS \"time\", vibration AS \"Vibration RMS (mm/s)\" FROM telemetry WHERE $__timeFilter(timestamp) ORDER BY timestamp ASC;",
+          "refId": "A"
+        }
+      ],
+      "title": "B. Vibration Velocity (ISO 10816-3 RMS) Over Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "fillOpacity": 15
+          },
+          "unit": "amp",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "#EAB839", "value": 9.5 },
+              { "color": "#EF843C", "value": 11.25 },
+              { "color": "#E24D42", "value": 13.5 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 14 },
+      "id": 3,
+      "options": {
+        "legend": { "calcs": ["last", "max", "mean"], "displayMode": "table", "placement": "bottom" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT timestamp AS \"time\", current AS \"Motor Current (A)\" FROM telemetry WHERE $__timeFilter(timestamp) ORDER BY timestamp ASC;",
+          "refId": "A"
+        }
+      ],
+      "title": "C. Motor Line Current Over Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "fillOpacity": 15
+          },
+          "unit": "rotrpm",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "#E24D42", "value": null },
+              { "color": "#EF843C", "value": 1440 },
+              { "color": "green", "value": 1480 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 14 },
+      "id": 4,
+      "options": {
+        "legend": { "calcs": ["last", "min", "mean"], "displayMode": "table", "placement": "bottom" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT timestamp AS \"time\", rpm AS \"Shaft Speed (RPM)\" FROM telemetry WHERE $__timeFilter(timestamp) ORDER BY timestamp ASC;",
+          "refId": "A"
+        }
+      ],
+      "title": "D. Shaft Rotational Speed (RPM) Over Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "fillOpacity": 15
+          },
+          "unit": "bar",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "#E24D42", "value": null },
+              { "color": "#EF843C", "value": 2.0 },
+              { "color": "#EAB839", "value": 3.0 },
+              { "color": "green", "value": 3.8 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 22 },
+      "id": 5,
+      "options": {
+        "legend": { "calcs": ["last", "min", "mean"], "displayMode": "table", "placement": "bottom" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT timestamp AS \"time\", pressure AS \"Pressure (bar)\" FROM telemetry WHERE $__timeFilter(timestamp) ORDER BY timestamp ASC;",
+          "refId": "A"
+        }
+      ],
+      "title": "E. Auxiliary Lubrication / Cooling Pressure Over Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "fillOpacity": 15
+          },
+          "unit": "volt",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "#E24D42", "value": null },
+              { "color": "green", "value": 207 },
+              { "color": "#E24D42", "value": 253 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 22 },
+      "id": 6,
+      "options": {
+        "legend": { "calcs": ["last", "mean"], "displayMode": "table", "placement": "bottom" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT timestamp AS \"time\", voltage AS \"Voltage (V)\" FROM telemetry WHERE $__timeFilter(timestamp) ORDER BY timestamp ASC;",
+          "refId": "A"
+        }
+      ],
+      "title": "F. Supply Line Voltage Over Time",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 30 },
+      "id": 103,
+      "title": "Real-Time Industrial Telemetry Buffer (PostgreSQL Stream)",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "align": "auto", "displayMode": "auto" }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Temp (°C)" },
+            "properties": [{ "id": "unit", "value": "celsius" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Vib (mm/s)" },
+            "properties": [{ "id": "unit", "value": "velocitykms" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Current (A)" },
+            "properties": [{ "id": "unit", "value": "amp" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "RPM" },
+            "properties": [{ "id": "unit", "value": "rotrpm" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Volt (V)" },
+            "properties": [{ "id": "unit", "value": "volt" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Press (bar)" },
+            "properties": [{ "id": "unit", "value": "bar" }]
+          }
+        ]
+      },
+      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 31 },
+      "id": 16,
+      "options": {
+        "footer": { "countRows": true, "enablePagination": true, "fields": "" },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT timestamp AS \"Time\", machine_id AS \"Machine\", temperature AS \"Temp (°C)\", vibration AS \"Vib (mm/s)\", current AS \"Current (A)\", rpm AS \"RPM\", voltage AS \"Volt (V)\", pressure AS \"Press (bar)\", operating_state AS \"Operating State\" FROM telemetry ORDER BY timestamp DESC LIMIT 50;",
+          "refId": "A"
+        }
+      ],
+      "title": "Live PostgreSQL Telemetry Ingestion Buffer (Last 50 Records)",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 40 },
+      "id": 102,
+      "title": "Industrial Fault Events & Diagnosis Audit",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 41 },
+      "id": 9,
+      "options": {
+        "legend": { "displayMode": "table", "placement": "right", "values": ["value", "percent"] },
+        "pieType": "pie",
+        "reduceOptions": { "calcs": ["lastNotNull"], "values": false }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT fault_type AS metric, COUNT(*) AS value FROM fault_events GROUP BY fault_type ORDER BY value DESC;",
+          "refId": "A"
+        }
+      ],
+      "title": "I. Fault Class Distribution",
+      "type": "piechart"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "bars", "lineWidth": 1 }
+        }
+      },
+      "gridPos": { "h": 8, "w": 16, "x": 8, "y": 41 },
+      "id": 7,
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" } },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT date_trunc('minute', timestamp) AS \"time\", fault_type AS metric, COUNT(*) AS value FROM fault_events WHERE $__timeFilter(timestamp) GROUP BY 1, 2 ORDER BY 1 ASC;",
+          "refId": "A"
+        }
+      ],
+      "title": "G. Fault Events Frequency Over Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "align": "auto", "displayMode": "auto" }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Severity" },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  { "options": { "critical": { "color": "red", "index": 0 } }, "type": "value" },
+                  { "options": { "high": { "color": "orange", "index": 1 } }, "type": "value" },
+                  { "options": { "warning": { "color": "yellow", "index": 2 } }, "type": "value" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 49 },
+      "id": 10,
+      "options": {
+        "footer": { "countRows": true, "enablePagination": true, "fields": "" },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "p311-postgres-ds" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT timestamp AS \"Time\", machine_id AS \"Machine\", fault_type AS \"Fault Type\", severity AS \"Severity\", confidence AS \"Confidence\", triggered_rules::text AS \"Triggered Rules\" FROM fault_events ORDER BY timestamp DESC LIMIT 50;",
+          "refId": "A"
+        }
+      ],
+      "title": "J. Recent Fault Audit Log Table",
+      "type": "table"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "tags": ["iot", "scada", "telemetry", "p311", "motor"],
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": ["1s", "5s", "10s", "30s", "1m"]
+  },
+  "timezone": "utc",
+  "title": "P_311: Industrial Motor SCADA & Telemetry Monitor",
+  "uid": "p311-telemetry-dash",
+  "version": 2
+}

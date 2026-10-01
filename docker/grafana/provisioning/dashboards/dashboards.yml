@@ -1,0 +1,13 @@
+apiVersion: 1
+
+providers:
+  - name: 'P_311 Industrial Dashboards'
+    orgId: 1
+    folder: 'P_311 IoT'
+    type: file
+    disableDeletion: false
+    editable: true
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards

@@ -1,0 +1,270 @@
+{
+  "num_queries": 7,
+  "mean_reciprocal_rank": 1.0,
+  "hit_rate_at_1_pct": 100.0,
+  "hit_rate_at_3_pct": 100.0,
+  "average_top1_similarity": 0.6499,
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "total_knowledge_chunks": 34,
+  "query_results": [
+    {
+      "query_id": "Q1_BEARING",
+      "fault_type": "bearing_degradation",
+      "query": "Bearing inner raceway spalling, ball cage degradation, and lubrication grease breakdown",
+      "target_documents": [
+        "bearing_troubleshooting_guide.md"
+      ],
+      "expected_topic": "Bearing degradation & lubrication wear",
+      "matched_rank": 1,
+      "reciprocal_rank": 1.0,
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_similarity_score": 0.589,
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "filename": "bearing_troubleshooting_guide.md",
+          "section": "2. Plausible Root Causes",
+          "similarity_score": 0.589,
+          "is_target_match": true
+        },
+        {
+          "rank": 2,
+          "filename": "bearing_troubleshooting_guide.md",
+          "section": "4. Recommended Corrective Actions",
+          "similarity_score": 0.516,
+          "is_target_match": true
+        },
+        {
+          "rank": 3,
+          "filename": "preventive_maintenance_checklist.md",
+          "section": "3. Monthly / Quarterly Checklist",
+          "similarity_score": 0.448,
+          "is_target_match": false
+        }
+      ]
+    },
+    {
+      "query_id": "Q2_VIBRATION",
+      "fault_type": "excessive_vibration",
+      "query": "ISO 10816-3 Zone C and Zone D vibration velocity thresholds and mechanical unbalance",
+      "target_documents": [
+        "vibration_diagnostics_guide.md"
+      ],
+      "expected_topic": "ISO 10816-3 vibration severity",
+      "matched_rank": 1,
+      "reciprocal_rank": 1.0,
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_similarity_score": 0.622,
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "filename": "vibration_diagnostics_guide.md",
+          "section": "1. Vibration Severity Standards (ISO 10816-3)",
+          "similarity_score": 0.622,
+          "is_target_match": true
+        },
+        {
+          "rank": 2,
+          "filename": "vibration_diagnostics_guide.md",
+          "section": "4. Recommended Actions",
+          "similarity_score": 0.493,
+          "is_target_match": true
+        },
+        {
+          "rank": 3,
+          "filename": "vibration_diagnostics_guide.md",
+          "section": "2. Vibration Fault Classification",
+          "similarity_score": 0.475,
+          "is_target_match": true
+        }
+      ]
+    },
+    {
+      "query_id": "Q3_OVERHEATING",
+      "fault_type": "motor_overheating",
+      "query": "Stator winding thermal hotspot, cooling fan obstruction, and Class F temperature alarm",
+      "target_documents": [
+        "motor_overheating_guide.md"
+      ],
+      "expected_topic": "Motor cooling and winding thermal limits",
+      "matched_rank": 1,
+      "reciprocal_rank": 1.0,
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_similarity_score": 0.655,
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "filename": "motor_overheating_guide.md",
+          "section": "1. Thermal Limits & Symptoms",
+          "similarity_score": 0.655,
+          "is_target_match": true
+        },
+        {
+          "rank": 2,
+          "filename": "motor_overheating_guide.md",
+          "section": "4. Recommended Corrective Actions",
+          "similarity_score": 0.571,
+          "is_target_match": true
+        },
+        {
+          "rank": 3,
+          "filename": "motor_overheating_guide.md",
+          "section": "2. Plausible Causes",
+          "similarity_score": 0.556,
+          "is_target_match": true
+        }
+      ]
+    },
+    {
+      "query_id": "Q4_OVERLOAD",
+      "fault_type": "motor_overload",
+      "query": "Stator current exceeding full load amps with high rotor slip, thermal overload, and mechanical jam",
+      "target_documents": [
+        "electrical_overload_guide.md"
+      ],
+      "expected_topic": "Electrical overload and overcurrent",
+      "matched_rank": 1,
+      "reciprocal_rank": 1.0,
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_similarity_score": 0.706,
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "filename": "electrical_overload_guide.md",
+          "section": "1. Symptoms of Electrical Overload",
+          "similarity_score": 0.706,
+          "is_target_match": true
+        },
+        {
+          "rank": 2,
+          "filename": "electrical_overload_guide.md",
+          "section": "2. Plausible Causes",
+          "similarity_score": 0.548,
+          "is_target_match": true
+        },
+        {
+          "rank": 3,
+          "filename": "electrical_overload_guide.md",
+          "section": "4. Recommended Corrective Actions",
+          "similarity_score": 0.48,
+          "is_target_match": true
+        }
+      ]
+    },
+    {
+      "query_id": "Q5_PRESSURE",
+      "fault_type": "low_pressure",
+      "query": "Auxiliary cooling pressure loss below 3.0 bar, lubrication pump failure, and transmitter check",
+      "target_documents": [
+        "pressure_system_troubleshooting.md"
+      ],
+      "expected_topic": "Lubrication and hydraulic pressure",
+      "matched_rank": 1,
+      "reciprocal_rank": 1.0,
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_similarity_score": 0.739,
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "filename": "pressure_system_troubleshooting.md",
+          "section": "1. Operating Pressure Specifications & Symptoms",
+          "similarity_score": 0.739,
+          "is_target_match": true
+        },
+        {
+          "rank": 2,
+          "filename": "pressure_system_troubleshooting.md",
+          "section": "4. Recommended Corrective Actions",
+          "similarity_score": 0.601,
+          "is_target_match": true
+        },
+        {
+          "rank": 3,
+          "filename": "pressure_system_troubleshooting.md",
+          "section": "2. Plausible Causes",
+          "similarity_score": 0.575,
+          "is_target_match": true
+        }
+      ]
+    },
+    {
+      "query_id": "Q6_PREVENTIVE",
+      "fault_type": "preventive_maintenance",
+      "query": "Preventive maintenance checklist, grease replenishment intervals, and laser shaft alignment",
+      "target_documents": [
+        "preventive_maintenance_checklist.md"
+      ],
+      "expected_topic": "Preventive maintenance schedule",
+      "matched_rank": 1,
+      "reciprocal_rank": 1.0,
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_similarity_score": 0.621,
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "filename": "preventive_maintenance_checklist.md",
+          "section": "4. Annual Overhaul",
+          "similarity_score": 0.621,
+          "is_target_match": true
+        },
+        {
+          "rank": 2,
+          "filename": "preventive_maintenance_checklist.md",
+          "section": "2. Weekly Checklist",
+          "similarity_score": 0.552,
+          "is_target_match": true
+        },
+        {
+          "rank": 3,
+          "filename": "motor_maintenance_manual.md",
+          "section": "3. General Maintenance Procedures",
+          "similarity_score": 0.526,
+          "is_target_match": false
+        }
+      ]
+    },
+    {
+      "query_id": "Q7_SPECIFICATIONS",
+      "fault_type": "normal",
+      "query": "11 kW induction motor operating specifications, rated full load current, and megohmmeter insulation resistance",
+      "target_documents": [
+        "motor_maintenance_manual.md"
+      ],
+      "expected_topic": "Routine preventive maintenance & ratings",
+      "matched_rank": 1,
+      "reciprocal_rank": 1.0,
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_similarity_score": 0.617,
+      "retrieved_chunks": [
+        {
+          "rank": 1,
+          "filename": "motor_maintenance_manual.md",
+          "section": "1. Operating Specifications",
+          "similarity_score": 0.617,
+          "is_target_match": true
+        },
+        {
+          "rank": 2,
+          "filename": "preventive_maintenance_checklist.md",
+          "section": "3. Monthly / Quarterly Checklist",
+          "similarity_score": 0.539,
+          "is_target_match": false
+        },
+        {
+          "rank": 3,
+          "filename": "electrical_overload_guide.md",
+          "section": "4. Recommended Corrective Actions",
+          "similarity_score": 0.525,
+          "is_target_match": false
+        }
+      ]
+    }
+  ]
+}

@@ -74,6 +74,21 @@ This project is tailored specifically for consumer laptop hardware running Debia
 
 ## 🚀 Quick Start (Complete Stack)
 
+### ⚡ One-Click Master "Boss" Scripts (Recommended)
+You can start or stop the entire stack (PostgreSQL, Grafana, Mosquitto, Ollama, Backend, Telemetry Simulator, and Public Tunnel) with single commands:
+
+```bash
+# Start EVERYTHING
+./start.sh
+
+# Stop EVERYTHING cleanly
+./stop.sh
+```
+
+---
+
+### Manual Setup & Commands
+
 ### 1. Prerequisites Installation
 Ensure Python 3.10+, Node.js 18+, Docker Compose, and Ollama are installed:
 ```bash

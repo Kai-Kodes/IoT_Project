@@ -21,6 +21,16 @@ if [ -f logs/backend.pid ]; then
     echo "  [✓] Backend stopped (PID: $PID)"
 fi
 
+# Stop tunnels if active
+if [ -f logs/tunnel.pid ]; then
+    PID=$(cat logs/tunnel.pid)
+    kill -15 "$PID" 2>/dev/null || kill -9 "$PID" 2>/dev/null || true
+    rm -f logs/tunnel.pid
+    echo "  [✓] Tunnel stopped (PID: $PID)"
+fi
+pkill -f "wormhole http" 2>/dev/null || true
+pkill -f "cloudflared tunnel" 2>/dev/null || true
+
 # Fallback pattern kill for any orphaned instances
 pkill -f "simulator.motor_simulator" 2>/dev/null || true
 pkill -f "uvicorn backend.app.main:app" 2>/dev/null || true

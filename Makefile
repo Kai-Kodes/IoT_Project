@@ -21,6 +21,13 @@ run:
 stop:
 	@./scripts/stop_all.sh
 
+tunnel:
+	@./scripts/start_tunnel.sh
+
+stop-tunnel:
+	@./scripts/stop_tunnel.sh
+
+
 test:
 	@.venv/bin/pytest backend/tests -v
 

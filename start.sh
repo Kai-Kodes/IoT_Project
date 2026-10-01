@@ -139,7 +139,8 @@ if grep -q "tunnel established" logs/tunnel.log 2>/dev/null && kill -0 "$TUNNEL_
 else
     # Fallback to Cloudflare Tunnel (uses QUIC/UDP, bypasses network firewall proxies)
     kill -9 "$TUNNEL_PID" 2>/dev/null || true
-    pkill -f "wormhole http" 2>/dev/null || true
+    wait "$TUNNEL_PID" 2>/dev/null || true
+    pkill -9 -f "wormhole" 2>/dev/null || true
     echo -e "  ${YELLOW}!${NC} Network firewall intercepted TLS. Falling back to Cloudflare QUIC Tunnel..."
     
     nohup ~/.local/bin/cloudflared tunnel --url http://127.0.0.1:8000 > logs/tunnel.log 2>&1 &

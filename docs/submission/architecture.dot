@@ -1,0 +1,237 @@
+digraph P311_Architecture {
+    // Global Graph Attributes
+    graph [
+        rankdir="TB",
+        nodesep=0.6,
+        ranksep=0.8,
+        bgcolor="#FFFFFF",
+        fontname="Helvetica, Arial, sans-serif",
+        fontsize=14,
+        compound=true,
+        pad="0.5,0.5",
+        dpi=300
+    ];
+
+    // Global Node Attributes
+    node [
+        fontname="Helvetica, Arial, sans-serif",
+        fontsize=11,
+        shape="box",
+        style="filled,rounded",
+        color="#334155",
+        penwidth=1.5,
+        margin="0.25,0.15"
+    ];
+
+    // Global Edge Attributes
+    edge [
+        fontname="Helvetica, Arial, sans-serif",
+        fontsize=9,
+        color="#475569",
+        penwidth=1.3,
+        arrowsize=0.8
+    ];
+
+    // ==========================================
+    // 1. Telemetry Source Layer
+    // ==========================================
+    subgraph cluster_source {
+        label = "1. TELEMETRY PRODUCER LAYER";
+        labelloc = "t";
+        labeljust = "l";
+        style = "filled,rounded";
+        color = "#94A3B8";
+        fillcolor = "#F8FAFC";
+        penwidth = 1.8;
+
+        simulator [
+            label = "Industrial Motor Simulator\n(simulator/motor_simulator.py)\n- 11 kW 3-Phase Induction Model\n- Gaussian Noise & Thermal Lag\n- 6 Dynamic Fault Modes",
+            fillcolor = "#EFF6FF",
+            color = "#2563EB",
+            penwidth = 2.0
+        ];
+
+        csv_replay [
+            label = "CSV Dataset Replay Adapter\n(scripts/replay_dataset.py)\n- Benchmark Playback (4,000 samples)\n- 1x to 5x Variable Replay Rate",
+            fillcolor = "#EFF6FF",
+            color = "#2563EB"
+        ];
+    }
+
+    // ==========================================
+    // 2. Message Broker Layer
+    // ==========================================
+    subgraph cluster_broker {
+        label = "2. INGESTION & BROKER LAYER";
+        labelloc = "t";
+        labeljust = "l";
+        style = "filled,rounded";
+        color = "#94A3B8";
+        fillcolor = "#F8FAFC";
+        penwidth = 1.8;
+
+        mosquitto [
+            label = "Eclipse Mosquitto MQTT Broker\nTCP Port: 1883 | QoS: 1\nTopic: p311/machine/+/telemetry\nTopic: p311/machine/+/command\nTopic: p311/machine/+/status (LWT)",
+            fillcolor = "#ECFDF5",
+            color = "#059669",
+            penwidth = 2.0
+        ];
+    }
+
+    // ==========================================
+    // 3. Application & Intelligence Engine (FastAPI)
+    // ==========================================
+    subgraph cluster_backend {
+        label = "3. CORE APPLICATION & INTELLIGENCE ENGINE (FastAPI - Port 8000)";
+        labelloc = "t";
+        labeljust = "l";
+        style = "filled,rounded";
+        color = "#94A3B8";
+        fillcolor = "#F8FAFC";
+        penwidth = 1.8;
+
+        mqtt_consumer [
+            label = "Asynchronous MQTT Consumer\n(backend/app/mqtt/consumer.py)\n- Paho-MQTT v2 Event Thread\n- Non-Blocking asyncio Bridge",
+            fillcolor = "#F0FDF4",
+            color = "#16A34A"
+        ];
+
+        validator [
+            label = "Pydantic Schema Validation\n(backend/app/models/schemas.py)\n- TelemetryIn Contract Validation\n- Sensor Boundary Plausibility",
+            fillcolor = "#F0FDF4",
+            color = "#16A34A"
+        ];
+
+        detector [
+            label = "Deterministic Fault Detector\n(backend/app/detection/fault_detector.py)\n- ISO 10816-3 Vibration Severity Rules\n- IEC 60034-1 Stator Thermal Insulation\n- Sub-Millisecond Execution (< 5 ms)",
+            fillcolor = "#FEF3C7",
+            color = "#D97706",
+            penwidth = 2.2
+        ];
+
+        rag_engine [
+            label = "Local Semantic RAG Engine\n(backend/app/rag/knowledge_indexer.py)\n- sentence-transformers/all-MiniLM-L6-v2\n- 384-Dimensional Unit Vectors\n- Cosine Dot Product Search (< 1 ms)",
+            fillcolor = "#EDE9FE",
+            color = "#7C3AED",
+            penwidth = 2.0
+        ];
+
+        knowledge_base [
+            label = "Technical Knowledge Corpus\n(knowledge_base/*.md)\n- 7 Equipment Maintenance Manuals\n- 34 Semantic Document Chunks",
+            shape = "cylinder",
+            fillcolor = "#EDE9FE",
+            color = "#7C3AED"
+        ];
+
+        llm_client [
+            label = "Local LLM Client (Ollama)\n(backend/app/diagnosis/llm_client.py)\n- Model: qwen2.5:1.5b-instruct\n- VRAM: ~1.35 GB on NVIDIA RTX 2050\n- Enforced Strict JSON Mode",
+            fillcolor = "#FCE7F3",
+            color = "#DB2777",
+            penwidth = 2.0
+        ];
+
+        fallback_engine [
+            label = "Deterministic Fallback Generator\n(backend/app/diagnosis/diagnosis_engine.py)\n- Rule-Based Diagnostic Templates\n- Direct Technical Manual Quotes\n- 100% Zero-Crash Standby",
+            fillcolor = "#FEF2F2",
+            color = "#DC2626"
+        ];
+
+        sse_broadcaster [
+            label = "Server-Sent Events (SSE) Broadcaster\n(Endpoint: /api/telemetry/stream)\n- 1 Hz Telemetry & Alarms Push",
+            fillcolor = "#EFF6FF",
+            color = "#2563EB"
+        ];
+
+        rest_router [
+            label = "FastAPI REST API Endpoints\n- /api/health, /api/machines\n- /api/telemetry/history, /api/faults\n- /api/simulation/fault, /api/reports",
+            fillcolor = "#EFF6FF",
+            color = "#2563EB"
+        ];
+    }
+
+    // ==========================================
+    // 4. Persistence Layer
+    // ==========================================
+    subgraph cluster_storage {
+        label = "4. PERSISTENT STORAGE LAYER";
+        labelloc = "t";
+        labeljust = "l";
+        style = "filled,rounded";
+        color = "#94A3B8";
+        fillcolor = "#F8FAFC";
+        penwidth = 1.8;
+
+        postgres [
+            label = "PostgreSQL 16 (Primary Database)\nDocker Container | Host Port: 5433\n- asyncpg Connection Pool (2-10 conns)\n- JSONB Schemas: telemetry, faults, diagnoses",
+            shape = "cylinder",
+            fillcolor = "#E0F2FE",
+            color = "#0284C7",
+            penwidth = 2.0
+        ];
+
+        sqlite [
+            label = "SQLite 3 Fallback Database\n(data/p311.db)\n- aiosqlite Async Driver\n- Write-Ahead Logging (WAL Mode)",
+            shape = "cylinder",
+            fillcolor = "#E0F2FE",
+            color = "#0284C7"
+        ];
+    }
+
+    // ==========================================
+    // 5. Dual Presentation Layer
+    // ==========================================
+    subgraph cluster_presentation {
+        label = "5. DUAL PRESENTATION & SCADA LAYER";
+        labelloc = "t";
+        labeljust = "l";
+        style = "filled,rounded";
+        color = "#94A3B8";
+        fillcolor = "#F8FAFC";
+        penwidth = 1.8;
+
+        grafana [
+            label = "Grafana SCADA Dashboard\nDocker Container | Port: 3000\n- High-Density Time-Series Queries\n- ISO 10816 Limit Lines (Zone C / D)\n- Declarative Auto-Provisioning",
+            fillcolor = "#FFF7ED",
+            color = "#EA580C",
+            penwidth = 2.0
+        ];
+
+        react_ui [
+            label = "React 18 + Vite Web Dashboard\nServed at Port: 8000\n- Real-Time 1 Hz SSE Telemetry\n- SVG Digital Twin Motor Animation\n- Web Audio Industrial Alarm\n- Printable Maintenance Work Orders\n- Interactive Viva AI Tutor Chat",
+            fillcolor = "#EEF2FF",
+            color = "#4F46E5",
+            penwidth = 2.2
+        ];
+    }
+
+    // ==========================================
+    // Relationships & Interconnections
+    // ==========================================
+    simulator -> mosquitto [label = "MQTT Pub (1 Hz JSON)", color = "#2563EB", fontcolor = "#1E40AF"];
+    csv_replay -> mosquitto [label = "MQTT Pub", color = "#2563EB", style = "dashed"];
+
+    mosquitto -> mqtt_consumer [label = "MQTT Sub (QoS 1)", color = "#059669", fontcolor = "#065F46"];
+    mqtt_consumer -> validator [label = "Raw JSON", color = "#16A34A"];
+    
+    validator -> detector [label = "Validated Telemetry", color = "#D97706", fontcolor = "#92400E", penwidth = 1.8];
+    validator -> postgres [label = "Async Insert", color = "#0284C7"];
+    validator -> sqlite [label = "Fallback Insert", color = "#0284C7", style = "dashed"];
+
+    detector -> sse_broadcaster [label = "Normal (No Fault)", color = "#16A34A"];
+    detector -> rag_engine [label = "Fault Event (Search Query)", color = "#D97706", fontcolor = "#92400E", penwidth = 2.0];
+    detector -> postgres [label = "Persist Fault Event", color = "#D97706"];
+
+    knowledge_base -> rag_engine [label = "Indexed Chunks", color = "#7C3AED", style = "dotted"];
+    rag_engine -> llm_client [label = "Top-3 Excerpts + Evidence", color = "#7C3AED", fontcolor = "#5B21B6", penwidth = 1.8];
+
+    llm_client -> fallback_engine [label = "On Timeout / Offline", color = "#DC2626", style = "dashed"];
+    llm_client -> postgres [label = "Persist Diagnosis", color = "#DB2777"];
+    fallback_engine -> postgres [label = "Persist Fallback Diagnosis", color = "#DC2626"];
+
+    validator -> sse_broadcaster [label = "Broadcast Packet", color = "#2563EB"];
+    sse_broadcaster -> react_ui [label = "SSE Stream (/api/telemetry/stream)", color = "#4F46E5", fontcolor = "#3730A3", penwidth = 2.0];
+
+    postgres -> grafana [label = "SQL Polling (2s Refresh)", color = "#EA580C", fontcolor = "#9A3412", penwidth = 1.8];
+    react_ui -> rest_router [label = "Control RPC / Chat", color = "#4F46E5"];
+    rest_router -> mosquitto [label = "Publish Command RPC", color = "#2563EB", style = "dashed"];
+}

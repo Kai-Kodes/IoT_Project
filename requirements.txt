@@ -14,3 +14,7 @@ pandas>=2.2.0
 matplotlib>=3.8.0
 scikit-learn>=1.4.0
 asyncpg>=0.30.0
+
+# Document & Presentation Generation
+python-docx>=1.1.0
+python-pptx>=1.0.0
